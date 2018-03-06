@@ -1,7 +1,6 @@
 """
 A prototype for buffering keyboard inputs
-in a nonreentrant section
-This concept will be used in the to eliminate threads in PyScan
+This concept will be used in the to sreamline threads in PyScan
 Peter Timperman
 """
 from collections import deque
@@ -56,7 +55,7 @@ def start_print_loop():
 frame = Frame(root, width=100, height=100)
 frame.bind("<a>", buffer_keys)
 frame.bind("<b>", buffer_keys)
-frame.bind("<s>", lambda b: buffer_keys)
+frame.bind("<s>", lambda s: buffer_keys)
 frame.bind("<p>", lambda p: start_print_loop())
 frame.pack()
 frame.focus_set()
