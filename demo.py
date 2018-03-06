@@ -7,6 +7,8 @@ Peter Timperman
 from collections import deque
 from Tkinter import *
 import time
+import threading
+import pdb 
 root = Tk()
 
 key_buffer = deque()
@@ -25,12 +27,15 @@ bindings_dict["s"]=(lambda stop: s)
 def empty_buffer():
 	while len(key_buffer) != 0:
 		key = key_buffer.popleft() 
-		print key 
+		print key
+		#pdb.set_trace()
+		print bindings_dict
 		bindings_dict[key]
 
 def buffer_keys(event):
 	print "buffered"
-	key_buffer.append(repr(event.char))
+
+	key_buffer.append(str.replace(repr(event.char), '\'', ""))
 
 
 def print_loop():
@@ -40,6 +45,9 @@ def print_loop():
 			print "Loooping......:)"
 			time.sleep(1)
 			empty_buffer()
+def start_print_loop():
+	p = threading.Thread(target=print_loop)
+	p.start()
 
 
 
@@ -49,7 +57,7 @@ frame = Frame(root, width=100, height=100)
 frame.bind("<a>", buffer_keys)
 frame.bind("<b>", buffer_keys)
 frame.bind("<s>", lambda b: buffer_keys)
-frame.bind("<p>", lambda p: print_loop())
+frame.bind("<p>", lambda p: start_print_loop())
 frame.pack()
 frame.focus_set()
 
